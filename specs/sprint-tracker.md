@@ -30,9 +30,15 @@
 - Sprint execution started with Phase 0 delegation.
 - CurPro-Planner rerun completed after instruction updates; two-developer plan (CurPro-Coder + Coder) finalized.
 - Phase 0 execution started (dependency/config baseline).
+- User decision recorded: include CurPro-Designer workstream in Sprint 2.
 
 ### Verification Log
 - Pending
 
 ### Outcome
 - In progress
+
+## Sprint 2 (Planned)
+
+### Draft Focus
+- Add CurPro-Designer lane for UI/UX polish across login, events list/detail, dashboard, and sign-up feedback states.

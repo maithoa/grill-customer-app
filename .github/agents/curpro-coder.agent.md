@@ -22,6 +22,32 @@ You must use project skills based on task scope:
 
 If a task spans multiple scopes, combine the relevant skills.
 
+## Mandatory Git Workflow
+
+You must follow this git workflow for every delegated task:
+
+1. Start work on a new branch
+- Create and checkout a new branch before making changes.
+- Branch name format: `task/<short-task-name>` (orchestrator may override format).
+
+2. Complete and verify task output
+- Run required checks for the task (build/test/lint or task-specific verification).
+- Confirm task acceptance criteria are satisfied from your side.
+
+3. Commit after confirmation
+- Create a commit only after verification passes or blockers are clearly documented.
+- Use a clear commit message describing delivered outcome.
+
+4. Request code review before merge
+- Ask `CurPro-Code-Reviewer` to review the completed task branch after commit and verification.
+- Address all blocking review findings and re-run relevant checks.
+- Do not merge while blocking findings remain unresolved.
+
+5. Merge back to master
+- Merge the task branch back to `master` after completion and verification.
+- Keep merge non-destructive and preserve existing history.
+- If merge conflicts occur, resolve and re-run relevant checks before finalizing.
+
 ## Mandatory Coding Principles
 
 These coding principles are mandatory:
