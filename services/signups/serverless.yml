@@ -1,0 +1,47 @@
+service: grill-customers-signups
+
+frameworkVersion: '4'
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  stage: ${opt:stage, 'local'}
+  region: ap-southeast-2
+  httpApi:
+    cors:
+      # HITL: replace with the real Amplify domain before production deploy.
+      allowedOrigins:
+        - https://your-amplify-domain.amplifyapp.com
+      allowedMethods:
+        - POST
+        - OPTIONS
+      allowedHeaders:
+        - Content-Type
+        - Authorization
+      allowCredentials: true
+  environment:
+    SUPABASE_URL: ${ssm:/grill-customers/supabase-url}
+    SUPABASE_SERVICE_ROLE_KEY: ${ssm:/grill-customers/supabase-service-role-key}
+
+functions:
+  signUp:
+    handler: handler.signUp
+    timeout: 10
+    # PRD: Signups should use shared account concurrency pool.
+    # Do not set reservedConcurrency here.
+    events:
+      - httpApi:
+          method: POST
+          path: /signups
+      - schedule:
+          name: grill-customers-signups-warmup-${sls:stage}
+          description: Warm-up ping for signups lambda (Signups only)
+          rate: rate(5 minutes)
+          enabled: true
+
+plugins:
+  - serverless-offline
+
+custom:
+  serverless-offline:
+    httpPort: 4200

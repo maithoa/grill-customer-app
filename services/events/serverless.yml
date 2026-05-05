@@ -1,0 +1,43 @@
+service: grill-customers-events
+
+frameworkVersion: '4'
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  stage: ${opt:stage, 'local'}
+  region: ap-southeast-2
+  httpApi:
+    cors:
+      # HITL: replace with the real Amplify domain before production deploy.
+      allowedOrigins:
+        - https://your-amplify-domain.amplifyapp.com
+      allowedMethods:
+        - GET
+        - OPTIONS
+      allowedHeaders:
+        - Content-Type
+        - Authorization
+      allowCredentials: true
+  environment:
+    SUPABASE_URL: ${ssm:/grill-customers/supabase-url}
+    SUPABASE_ANON_KEY: ${ssm:/grill-customers/supabase-anon-key}
+
+functions:
+  listEvents:
+    handler: handler.listEvents
+    timeout: 10
+    # PRD concurrency target for Events Lambda.
+    provisionedConcurrency: 10
+    reservedConcurrency: 200
+    events:
+      - httpApi:
+          method: GET
+          path: /events
+
+plugins:
+  - serverless-offline
+
+custom:
+  serverless-offline:
+    httpPort: 3001
