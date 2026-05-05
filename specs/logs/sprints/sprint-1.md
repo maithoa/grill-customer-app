@@ -55,4 +55,5 @@ Deliver Sprint 1 scope from PRD using dependency order in `specs/issues/001-007`
 - None currently beyond declared issue dependencies
 
 ## Next Sprint Proposal
-- Start Phase 1 implementation and verification loop.
+- Include a dedicated CurPro-Designer lane in Sprint 2 for UI/UX refinement after functional slices are stable.
+- Focus areas: login UX/error states, events list/detail visual hierarchy, dashboard readability/empty states, sign-up feedback styling.

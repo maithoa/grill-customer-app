@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 type EventCardProps = {
   event: {
     id: string;
@@ -23,12 +25,9 @@ function formatDateTime(value: string): string {
 export function EventCard({ event }: EventCardProps) {
   return (
     <article className="overflow-hidden rounded-2xl border border-black/10 bg-white shadow-sm">
-      <img
-        src={event.banner_url}
-        alt={event.name}
-        className="h-44 w-full object-cover"
-        loading="lazy"
-      />
+      <div className="relative h-44 w-full">
+        <Image src={event.banner_url} alt={event.name} fill sizes="100vw" className="object-cover" />
+      </div>
       <div className="space-y-3 p-5">
         <p className="text-xs font-semibold uppercase tracking-[0.16em] text-zinc-500">
           {event.country}

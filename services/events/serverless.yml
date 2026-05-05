@@ -6,12 +6,12 @@ provider:
   name: aws
   runtime: nodejs20.x
   stage: ${opt:stage, 'local'}
-  region: ap-southeast-2
+  region: ${env:AWS_REGION, 'eu-north-1'}
   httpApi:
     cors:
-      # HITL: replace with the real Amplify domain before production deploy.
       allowedOrigins:
-        - https://your-amplify-domain.amplifyapp.com
+        - https://dev.d2bozy8x7zs48w.amplifyapp.com
+        - https://master.d2bozy8x7zs48w.amplifyapp.com
       allowedMethods:
         - GET
         - OPTIONS
@@ -20,8 +20,8 @@ provider:
         - Authorization
       allowCredentials: true
   environment:
-    SUPABASE_URL: ${ssm:/grill-customers/supabase-url}
-    SUPABASE_ANON_KEY: ${ssm:/grill-customers/supabase-anon-key}
+    SUPABASE_URL: ${env:SUPABASE_URL, ssm:/grill-customers/supabase-url}
+    SUPABASE_ANON_KEY: ${env:SUPABASE_ANON_KEY, ssm:/grill-customers/supabase-anon-key}
 
 functions:
   listEvents:

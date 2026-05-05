@@ -1,0 +1,117 @@
+{
+  "/Users/thoanguyen/Documents/UpSkills/grill-customers-app/services/events/serverless.yml": {
+    "versionFramework": "4.35.0",
+    "servicePath": "/Users/thoanguyen/Documents/UpSkills/grill-customers-app/services/events/serverless.yml",
+    "serviceConfigFileName": "serverless.yml",
+    "service": {
+      "service": "grill-customers-events",
+      "frameworkVersion": "4",
+      "provider": {
+        "name": "aws",
+        "runtime": "nodejs20.x",
+        "stage": "local",
+        "region": "ap-southeast-2",
+        "httpApi": {
+          "cors": {
+            "allowedOrigins": [
+              "https://your-amplify-domain.amplifyapp.com"
+            ],
+            "allowedMethods": [
+              "GET",
+              "OPTIONS"
+            ],
+            "allowedHeaders": [
+              "Content-Type",
+              "Authorization"
+            ],
+            "allowCredentials": "<REDACTED>"
+          }
+        },
+        "environment": {
+          "SUPABASE_URL": "${env:SUPABASE_URL, ssm:/grill-customers/supabase-url}",
+          "SUPABASE_ANON_KEY": "${env:SUPABASE_ANON_KEY, ssm:/grill-customers/supabase-anon-key}"
+        }
+      },
+      "functions": {
+        "listEvents": {
+          "handler": "handler.listEvents",
+          "timeout": 10,
+          "provisionedConcurrency": 10,
+          "reservedConcurrency": 200,
+          "events": [
+            {
+              "httpApi": {
+                "method": "GET",
+                "path": "/events"
+              }
+            }
+          ]
+        }
+      },
+      "plugins": [
+        "serverless-offline"
+      ],
+      "custom": {
+        "serverless-offline": {
+          "httpPort": 3001
+        }
+      }
+    },
+    "provider": {
+      "name": "aws",
+      "runtime": "nodejs20.x",
+      "stage": "local",
+      "region": "ap-southeast-2",
+      "httpApi": {
+        "cors": {
+          "allowedOrigins": [
+            "https://your-amplify-domain.amplifyapp.com"
+          ],
+          "allowedMethods": [
+            "GET",
+            "OPTIONS"
+          ],
+          "allowedHeaders": [
+            "Content-Type",
+            "Authorization"
+          ],
+          "allowCredentials": "<REDACTED>"
+        }
+      },
+      "environment": {
+        "SUPABASE_URL": "${env:SUPABASE_URL, ssm:/grill-customers/supabase-url}",
+        "SUPABASE_ANON_KEY": "${env:SUPABASE_ANON_KEY, ssm:/grill-customers/supabase-anon-key}"
+      }
+    },
+    "dashboard": {
+      "isEnabledForService": false,
+      "requiredAuthentication": false,
+      "orgFeaturesInUse": null,
+      "orgObservabilityIntegrations": null,
+      "serviceAppId": null,
+      "serviceProvider": null,
+      "instanceParameters": null
+    },
+    "error": {
+      "message": "Failed to resolve variable '/grill-customers/supabase-anon-key' with resolver 'ssm' and provider 'default-aws-credential-resolver': Error: AWS credentials missing or invalid. Original error from AWS: Could not load credentials from any providers",
+      "stack": "Error: Failed to resolve variable '/grill-customers/supabase-anon-key' with resolver 'ssm' and provider 'default-aws-credential-resolver': Error: AWS credentials missing or invalid. Original error from AWS: Could not load credentials from any providers\n    at #resolveKey (file:///Users/thoanguyen/.serverless/releases/4.35.0/package/dist/sf-core.js:946:25984)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async _ResolverManager.resolve (file:///Users/thoanguyen/.serverless/releases/4.35.0/package/dist/sf-core.js:946:32026)\n    at async #handlePlaceholderNode (file:///Users/thoanguyen/.serverless/releases/4.35.0/package/dist/sf-core.js:946:30550)\n    at async file:///Users/thoanguyen/.serverless/releases/4.35.0/package/dist/sf-core.js:946:28394\n    at async processNodeAndHandleCompletion (file:///Users/thoanguyen/.serverless/releases/4.35.0/package/dist/sf-core.js:946:16781)",
+      "code": "RESOLVER_RESOLVE_VARIABLE_ERROR"
+    },
+    "serviceRawFile": "service: grill-customers-events\n\nframeworkVersion: '4'\n\nprovider:\n  name: aws\n  runtime: nodejs20.x\n  stage: ${opt:stage, 'local'}\n  region: ap-southeast-2\n  httpApi:\n    cors:\n      # HITL: replace with the real Amplify domain before production deploy.\n      allowedOrigins:\n        - https://your-amplify-domain.amplifyapp.com\n      allowedMethods:\n        - GET\n        - OPTIONS\n      allowedHeaders:\n        - Content-Type\n        - Authorization\n      allowCredentials: true\n  environment:\n    SUPABASE_URL: ${env:SUPABASE_URL, ssm:/grill-customers/supabase-url}\n    SUPABASE_ANON_KEY: ${env:SUPABASE_ANON_KEY, ssm:/grill-customers/supabase-anon-key}\n\nfunctions:\n  listEvents:\n    handler: handler.listEvents\n    timeout: 10\n    # PRD concurrency target for Events Lambda.\n    provisionedConcurrency: 10\n    reservedConcurrency: 200\n    events:\n      - httpApi:\n          method: GET\n          path: /events\n\nplugins:\n  - serverless-offline\n\ncustom:\n  serverless-offline:\n    httpPort: 3001\n",
+    "command": [
+      "offline"
+    ],
+    "options": {
+      "stage": "local"
+    },
+    "orgId": "9970b313-90cb-48b4-95db-e730fb2e6468",
+    "orgName": "maithoa",
+    "userId": "lGfb3Hw5K4Q89hs7rp",
+    "userName": "maithoa",
+    "serviceProviderAwsCfStackId": null,
+    "serviceProviderAwsCfStackCreated": null,
+    "serviceProviderAwsCfStackUpdated": null,
+    "serviceProviderAwsCfStackStatus": null,
+    "serviceProviderAwsCfStackOutputs": null
+  }
+}
