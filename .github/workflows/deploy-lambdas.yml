@@ -1,0 +1,66 @@
+name: Deploy Lambdas
+
+on:
+  push:
+    branches:
+      - dev
+      - master
+    paths:
+      - services/**
+      - .github/workflows/deploy-lambdas.yml
+  workflow_dispatch:
+    inputs:
+      stage:
+        description: Optional deploy stage override
+        required: false
+        type: choice
+        options:
+          - dev
+          - prod
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Determine stage
+        id: stage
+        shell: bash
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" && -n "${{ inputs.stage }}" ]]; then
+            deploy_stage="${{ inputs.stage }}"
+          elif [[ "${{ github.ref_name }}" == "master" ]]; then
+            deploy_stage="prod"
+          else
+            deploy_stage="dev"
+          fi
+          echo "stage=$deploy_stage" >> "$GITHUB_OUTPUT"
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION || secrets.AWS_REGION }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Deploy events service
+        working-directory: services/events
+        run: npx serverless deploy --stage ${{ steps.stage.outputs.stage }}
+
+      - name: Deploy signups service
+        working-directory: services/signups
+        run: npx serverless deploy --stage ${{ steps.stage.outputs.stage }}
