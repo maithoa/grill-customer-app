@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { SignUpButton } from '@/components/events/SignUpButton';
 import { signUpAction } from '@/lib/actions/signUpAction';
@@ -73,7 +74,9 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
   return (
     <main className="mx-auto min-h-screen w-full max-w-5xl px-6 py-12">
       <article className="space-y-6 overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-sm">
-        <img src={event.banner_url} alt={event.name} className="h-64 w-full object-cover sm:h-80" />
+        <div className="relative h-64 w-full sm:h-80">
+          <Image src={event.banner_url} alt={event.name} fill sizes="(max-width: 640px) 100vw, 80vw" className="object-cover" />
+        </div>
 
         <div className="space-y-6 p-6 sm:p-8">
           <header className="space-y-3">
